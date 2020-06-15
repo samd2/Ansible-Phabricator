@@ -44,3 +44,4 @@ default_mysql_service: mysqld
 default_mysql_path: /etc/my.cnf.d
 default_mysql_socket: /var/lib/mysql/mysql.sock
 default_git_core_path: /usr/libexec/git-core
+make_dummy_cert_path: /etc/ssl/certs/make-dummy-cert

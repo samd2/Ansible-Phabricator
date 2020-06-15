@@ -18,6 +18,8 @@ default_phabricator_packages:
   - php7.2-apcu
   - php7.2-zip
   - python-pip
+  - python3-setuptools
+  - python3-pip
   - exim4
   - subversion
   - mercurial

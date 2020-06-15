@@ -32,5 +32,5 @@ default_mysql_path: /etc/mysql/mysql.conf.d
 
 default_phabricator_packages_local:
   - mysql-server-8.0
-  - python-dev
+  - python3-dev
   - libmysqlclient-dev

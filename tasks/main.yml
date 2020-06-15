@@ -102,7 +102,27 @@
 
 - name: enable remi
   command: "sudo yum-config-manager --enable remi-php73"
-  when: ansible_os_family == "RedHat"
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version == "7"
+
+# required for libedit-devel package
+- name: enable PowerTools
+  changed_when: false
+  args:
+    warn: false
+  shell:
+    cmd: dnf config-manager --set-enabled PowerTools  # noqa 305
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version|int > 7
+
+- name: enable remi
+  command: "sudo dnf module install -y php:remi-7.3"
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version|int > 7
+  changed_when: false
 
 - name: install packages (RHEL)
   yum:
@@ -188,7 +208,7 @@
   notify: restart nginx
 
 - name: create cert (Redhat)
-  shell: /etc/ssl/certs/make-dummy-cert {{ phabricator_ssl_cert }} ; chmod 640 {{ phabricator_ssl_cert }} ; chgrp {{ users.web }} {{ phabricator_ssl_cert }}
+  shell: "{{ make_dummy_cert_path }} {{ phabricator_ssl_cert }} ; chmod 640 {{ phabricator_ssl_cert }} ; chgrp {{ users.web }} {{ phabricator_ssl_cert }}"
   args:
     creates: "{{ phabricator_ssl_cert }}"
   when: ansible_os_family == "RedHat"
